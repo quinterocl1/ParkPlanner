@@ -17,19 +17,20 @@ import 'package:access_control_residential/models/Register.dart';
 
 final apiDataProvider = FutureProvider.autoDispose<List<Register>>((ref) async {
   try {
-    final response = await http.get(Uri.parse('https://park-planner-ayiye7cx5q-tl.a.run.app/swagger.json'));
+    final response = await http.get(Uri.parse('https://park-planner-ayiye7cx5q-tl.a.run.app/registers/'));
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
       final decodedData = jsonDecode(body);
+      print (decodedData);
       List<Register> registerList = (decodedData as List)
           .map((data) => Register(
                 data['id'],
                 data['date'],
                 data['time'],
-                data['idUser'],
-                data['idVehicle'],
-                data['status']
+                data['iduser'],
+                data['idvehicle'],
+                data['Estado']
               ))
           .toList();
       print (decodedData);

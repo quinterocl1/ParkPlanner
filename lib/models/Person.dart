@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Person {
-  int id;
   String name;
   String identity;
   String number;
@@ -12,7 +11,6 @@ class Person {
 
 
   Person(
-    this.id, 
     this.name, 
     this.identity, 
     this.number, 

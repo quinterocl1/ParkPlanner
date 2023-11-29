@@ -4,6 +4,7 @@ import 'package:access_control_residential/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:access_control_residential/screens/homeadmin.dart';
 import 'package:access_control_residential/screens/settings.dart';
+import 'package:access_control_residential/models/DataTable.dart';
 
 class HomeGuardPage extends StatefulWidget {
   static const String routeName = 'HomeGuardPage';
@@ -39,30 +40,7 @@ class _HomeGuardPageState extends State<HomeGuardPage> {
                       ),
                     ]),
                   ),
-                DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Name')),
-                      DataColumn(label: Text('Age')),
-                      DataColumn(label: Text('City')),
-                    ],
-                    rows: const [
-                      DataRow(cells: [
-                        DataCell(Text('John')),
-                        DataCell(Text('30')),
-                        DataCell(Text('New York')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('Jane')),
-                        DataCell(Text('25')),
-                        DataCell(Text('San Francisco')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('Bob')),
-                        DataCell(Text('40')),
-                        DataCell(Text('Los Angeles')),
-                      ]),
-                    ],
-                  ),
+                  MyDataTable(),
                 ]),
               ),
             ),
