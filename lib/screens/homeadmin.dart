@@ -39,7 +39,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                       ),
                     ]),
                   ),
-                  MyDataTable(),
+                  const MyDataTable(),
                 ]),
               ),
             ),

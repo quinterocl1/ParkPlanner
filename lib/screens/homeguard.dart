@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:access_control_residential/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:access_control_residential/screens/homeadmin.dart';
 import 'package:access_control_residential/screens/settings.dart';
 import 'package:access_control_residential/models/DataTable.dart';
 
@@ -15,9 +14,6 @@ class HomeGuardPage extends StatefulWidget {
 }
 
 class _HomeGuardPageState extends State<HomeGuardPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -40,13 +36,13 @@ class _HomeGuardPageState extends State<HomeGuardPage> {
                       ),
                     ]),
                   ),
-                  MyDataTable(),
+                  const MyDataTable(),
                 ]),
               ),
             ),
           ),
           bottomNavigationBar: BottomAppBar(
-            shape: CircularNotchedRectangle(),
+            shape: const CircularNotchedRectangle(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:access_control_residential/Provider/riverpod.dart';
 
 class MyDataTable extends ConsumerWidget {
+  const MyDataTable({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final apiData = ref.watch(apiDataProvider);
@@ -30,7 +32,7 @@ class MyDataTable extends ConsumerWidget {
           }).toList(),
         );
       },
-      loading: () => CircularProgressIndicator(),
+      loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text('Error: $error'),
     );
   }

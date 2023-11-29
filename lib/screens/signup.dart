@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:access_control_residential/constants.dart';
@@ -13,6 +14,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -75,132 +78,139 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ],
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircleAvatar(
-                            radius: 40 * scaleh,
-                            backgroundColor: Colors.grey[200],
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    'assets/imgs/Recognition.png',
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircleAvatar(
+                              radius: 40 * scaleh,
+                              backgroundColor: Colors.grey[200],
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.transparent,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      'assets/imgs/Recognition.png',
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 16 * scaleh),
-                          TextField(
-                            controller: _usernameController,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              hintText: 'UserName',
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                            ),
-                          ),
-                          SizedBox(height: 16 * scaleh),
-                          TextField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              hintText: 'Email',
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                            ),
-                          ),
-                          SizedBox(height: 16 * scaleh),
-                          TextField(
-                            controller: _passwordController,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              hintText: 'Password',
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                            ),
-                          ),
-                          SizedBox(height: 16 * scaleh),
-                          TextField(
-                            controller: _roleController,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: kPrimaryColor),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              hintText: 'Role',
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                            ),
-                          ),
-                          SizedBox(height: 16 * scaleh),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                              builder: (context) => const LogInPage(),
-                               ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                                foregroundColor: kPrimaryLightColor,
-                                backgroundColor: kPrimaryColor,
-                                elevation: 10,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 17 * scaleh, horizontal: 12 * scalew),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                            SizedBox(height: 16 * scaleh),
+                            TextFormField(
+                              controller: _usernameController,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                minimumSize: Size(340 * scalew, 50)),
-                            child: Text(
-                              "Register",
-                              style: GoogleFonts.inter(
-                                textStyle: const TextStyle(
-                                  color: kPrimaryLightColor,
-                                  fontSize: 16,
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                hintText: 'UserName',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                              ),
+                            ),
+                            SizedBox(height: 16 * scaleh),
+                            TextFormField(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                hintText: 'Email',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                              ),
+                            ),
+                            SizedBox(height: 16 * scaleh),
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                hintText: 'Password',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                              ),
+                            ),
+                            SizedBox(height: 16 * scaleh),
+                            TextFormField(
+                              controller: _roleController,
+                              keyboardType: TextInputType.name,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: kPrimaryColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                hintText: 'Role',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                              ),
+                            ),
+                            SizedBox(height: 16 * scaleh),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LogInPage(),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: kPrimaryLightColor,
+                                  backgroundColor: kPrimaryColor,
+                                  elevation: 10,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 17 * scaleh,
+                                      horizontal: 12 * scalew),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  minimumSize: Size(340 * scalew, 50)),
+                              child: Text(
+                                "Register",
+                                style: GoogleFonts.inter(
+                                  textStyle: const TextStyle(
+                                    color: kPrimaryLightColor,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

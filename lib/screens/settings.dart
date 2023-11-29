@@ -90,42 +90,42 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         ListTile(
-                          title: Text('Permissions'),
+                          title: const Text('Permissions'),
                           subtitle:
-                              Text('Enable or disable permissions'),
+                              const Text('Enable or disable permissions'),
                           onTap: () {
                             // Acciones cuando se toca la opción de notificaciones
                           },
                         ),
-                        Divider(),
+                        const Divider(),
                         ListTile(
-                          title: Text('Connect us'),
+                          title: const Text('Connect us'),
                           subtitle:
-                              Text('Connect with us for support'),
+                              const Text('Connect with us for support'),
                           onTap: () {
                             // Acciones cuando se toca la opción de idioma
                           },
                         ),
-                        Divider(),
+                        const Divider(),
                         // Puedes agregar más opciones de configuración según sea necesario
                         ListTile(
-                          title: Text('About us'),
+                          title: const Text('About us'),
                           subtitle:
-                              Text('Learn more about our team'),
+                              const Text('Learn more about our team'),
                           onTap: () {
                             // Acciones cuando se toca la opción de idioma
                           },
                         ),
-                        Divider(),
+                        const Divider(),
                         ListTile(
-                          title: Text('Log out'),
+                          title: const Text('Log out'),
                           onTap: () {
                             // Acciones cuando se toca la opción de notificaciones
                           },
                         ),
-                        Divider(),
+                        const Divider(),
                       ],
                     ),
                   ),

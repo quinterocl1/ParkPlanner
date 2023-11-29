@@ -4,6 +4,7 @@ import 'package:access_control_residential/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:access_control_residential/screens/signup.dart';
 import 'package:access_control_residential/screens/homeadmin.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LogInPage extends StatefulWidget {
   static const String routeName = 'LogIn';
@@ -14,41 +15,34 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
+
+  String _email = "";
+  String _pass = "";
+
+  void _handleLogin() async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: _email, password: _pass);
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeAdminPage(),
+        ),
+      );
+    } catch (e) {
+      const Text("Error signing");
+    }
+  }
 
   void _passwordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
     });
-  }
-
-  void _login() {
-    // Aquí puedes agregar la lógica para verificar las credenciales del usuario
-    String username = _usernameController.text;
-    String password = _passwordController.text;
-
-    if (username == 'admin' && password == '1234') {
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Invalid credentials'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Leave'),
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 
   @override
@@ -73,112 +67,131 @@ class _LogInPageState extends State<LogInPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: 100 * scaleh, horizontal: 30 * scalew),
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Email Address",
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 14 * scaleh,
-                              )),
-                            ),
-                            TextField(
-                              controller: _usernameController,
-                              cursorColor: kSecondaryColor,
-                              decoration: InputDecoration(
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: kSecondaryColor),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: kSecondaryColor),
-                                ),
-                                hintText: 'Enter Email',
-                                hintStyle: GoogleFonts.inter(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Email Address",
+                                style: GoogleFonts.inter(
                                     textStyle: TextStyle(
-                                  color: kSecondaryColor,
+                                  color: kPrimaryColor,
                                   fontSize: 14 * scaleh,
                                 )),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10 * scaleh,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Password",
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 14 * scaleh,
-                              )),
-                            ),
-                            TextField(
-                              controller: _passwordController,
-                              cursorColor: kSecondaryColor,
-                              obscureText: _obscureText,
-                              decoration: InputDecoration(
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: kSecondaryColor),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: kSecondaryColor),
-                                ),
-                                hintText: 'Password',
-                                hintStyle: GoogleFonts.inter(
-                                    textStyle: TextStyle(
-                                  color: kSecondaryColor,
-                                  fontSize: 14 * scaleh,
-                                )),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _obscureText
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: kSecondaryColor,
+                              TextFormField(
+                                controller: _usernameController,
+                                keyboardType: TextInputType.emailAddress,
+                                cursorColor: kSecondaryColor,
+                                decoration: InputDecoration(
+                                  enabledBorder: const UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: kSecondaryColor),
                                   ),
-                                  onPressed: () {
-                                    _passwordVisibility();
-                                  },
+                                  focusedBorder: const UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: kSecondaryColor),
+                                  ),
+                                  hintText: 'Enter Email',
+                                  hintStyle: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                    color: kSecondaryColor,
+                                    fontSize: 14 * scaleh,
+                                  )),
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _email = value;
+                                  });
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10 * scaleh,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Password",
+                                style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 14 * scaleh,
+                                )),
+                              ),
+                              TextFormField(
+                                controller: _passwordController,
+                                cursorColor: kSecondaryColor,
+                                obscureText: _obscureText,
+                                decoration: InputDecoration(
+                                  enabledBorder: const UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: kSecondaryColor),
+                                  ),
+                                  focusedBorder: const UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: kSecondaryColor),
+                                  ),
+                                  hintText: 'Password',
+                                  hintStyle: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                    color: kSecondaryColor,
+                                    fontSize: 14 * scaleh,
+                                  )),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscureText
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: kSecondaryColor,
+                                    ),
+                                    onPressed: () {
+                                      _passwordVisibility();
+                                    },
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your password';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _pass = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10 * scaleh),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => const HomeAdminPage(),
-                         ),
-                        );
+                        _handleLogin();
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
                           elevation: 10,
                           padding: const EdgeInsets.symmetric(
-                              vertical: 17,
-                              horizontal: 125),
+                              vertical: 17, horizontal: 125),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           minimumSize: Size(450 * scalew, 50 * scaleh)),
                       child: Text(
